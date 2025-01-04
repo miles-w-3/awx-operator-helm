@@ -6,7 +6,7 @@ gh-pages/
 /bundle_tmp*
 /bundle.Dockerfile
 /charts/*
-!/charts/.gitkeep
+!/charts/awx-operator.gitkeep
 /.cr-release-packages
 .vscode/
 __pycache__
