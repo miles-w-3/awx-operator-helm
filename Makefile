@@ -1,13 +1,17 @@
-# Include the Makefile from the ansible/awx-operator repository.
-# This Makefile is created with the clone-awx-operator.py script.
-include Makefile.awx-operator
-
 # GNU vs BSD in-place sed
 ifeq ($(shell sed --version 2>/dev/null | grep -q GNU && echo gnu),gnu)
 	SED_I := sed -i
 else
 	SED_I := sed -i ''
 endif
+
+# System variables
+OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
+ARCHA := $(shell uname -m | sed -e 's/x86_64/amd64/' -e 's/aarch64/arm64/')
+ARCHX := $(shell uname -m | sed -e 's/amd64/x86_64/' -e 's/aarch64/arm64/')
+
+# Operator configuration variables
+IMAGE_TAG_BASE ?= quay.io/ansible/awx-operator
 
 # Helm variables
 CHART_NAME ?= awx-operator
@@ -119,7 +123,7 @@ helm-chart-generate: kustomize helm kubectl-slice yq charts
 	$(PYTHON) clone-awx-operator.py
 
 	@echo "== KUSTOMIZE: Set image and chart label =="
-	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
+	cd config/manager && $(KUSTOMIZE) edit set image controller=$(IMAGE_TAG_BASE):$(shell $(YQ) '.appVersion' .helm/starter/Chart.yaml)
 	cd config/manager && $(KUSTOMIZE) edit set label helm.sh/chart:$(CHART_NAME)
 	cd config/default && $(KUSTOMIZE) edit set label helm.sh/chart:$(CHART_NAME)
 
