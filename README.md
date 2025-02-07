@@ -3,7 +3,7 @@
 This chart installs the AWX Operator resources configured in [this](https://github.com/ansible/awx-operator) repository.
 
 ## Communication
-
+some thing new in the readme!
 Refer to the
 [Getting in touch](https://ansible.readthedocs.io/projects/awx-operator-helm/contributing.html#getting-in-touch)
 section of the Contributors guide to find out how to get in touch with us.
